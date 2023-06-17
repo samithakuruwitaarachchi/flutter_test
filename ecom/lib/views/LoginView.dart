@@ -1,3 +1,4 @@
+import 'package:ecom/views/MainHome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,73 +45,12 @@ class _LoginViewState extends State<LoginView> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                       child:
-                      TextField(
-                        controller: _emailController,
-                        style: TextStyle(
-                          color: Color(AppColors.colorWhite),
-                          fontSize: 14,
-                        ),
-                        decoration: InputDecoration(
-                          errorText: _emailvalidate
-                              ? 'Please enter a valid email address.'
-                              : null,
-                          hintText: AppStrings.hintTextEmail,
-                          hintStyle: TextStyle(
-                            color: Color(AppColors.colorGray3),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          filled: true,
-                          fillColor: Color(AppColors.colorBlue),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
+                      emailInputWidget(emailController: _emailController, emailvalidate: _emailvalidate),
                     ),
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
-                      child: TextField(
-                        controller: _passController,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: _obscured,
-                        focusNode: textFieldFocusNode,
-                        obscuringCharacter: "*",
-                        style: TextStyle(
-                          color: Color(AppColors.colorWhite),
-                          fontSize: 14,
-                        ),
-                        decoration: InputDecoration(
-                          errorText: _passvalidate
-                              ? 'Please enter a correct password.'
-                              : null,
-                          hintText: AppStrings.hintPassword,
-                          hintStyle: TextStyle(
-                            color: Color(AppColors.colorGray3),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor: Color(AppColors.colorBlue),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 21, 0),
-                            child: GestureDetector(
-                              onTap: _toggleObscured,
-                              child: Icon(
-                                _obscured
-                                    ? Icons.visibility_outlined
-                                    : Icons.visibility_off_outlined,
-                                size: 24,
-                                color: Color(AppColors.colorGray1),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: passwordInputWidget(passController: _passController, obscured: _obscured, textFieldFocusNode: textFieldFocusNode, passvalidate: _passvalidate),
                     ),
 
                     Padding(
@@ -152,6 +92,10 @@ class _LoginViewState extends State<LoginView> {
                                         _emailvalidate = false;
                                         _passvalidate = false;
 
+                                        _navigateToDashboardScreen(context);
+
+
+
                                         // _authUser(_emailController.text,
                                         //     _passController.text, context);
                                       }
@@ -174,4 +118,106 @@ class _LoginViewState extends State<LoginView> {
     );
 
   }
+}
+
+class passwordInputWidget extends StatelessWidget {
+  const passwordInputWidget({
+    super.key,
+    required TextEditingController passController,
+    required bool obscured,
+    required this.textFieldFocusNode,
+    required bool passvalidate,
+  }) : _passController = passController, _obscured = obscured, _passvalidate = passvalidate;
+
+  final TextEditingController _passController;
+  final bool _obscured;
+  final FocusNode textFieldFocusNode;
+  final bool _passvalidate;
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _passController,
+      keyboardType: TextInputType.visiblePassword,
+      obscureText: _obscured,
+      focusNode: textFieldFocusNode,
+      obscuringCharacter: "*",
+      style: TextStyle(
+        color: Color(AppColors.colorWhite),
+        fontSize: 14,
+      ),
+      decoration: InputDecoration(
+        errorText: _passvalidate
+            ? 'Please enter a correct password.'
+            : null,
+        hintText: AppStrings.hintPassword,
+        hintStyle: TextStyle(
+          color: Color(AppColors.colorGray3),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        filled: true,
+        fillColor: Color(AppColors.colorBlue),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 21, 0),
+          child: GestureDetector(
+            child: Icon(
+              _obscured
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              size: 24,
+              color: Color(AppColors.colorGray1),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class emailInputWidget extends StatelessWidget {
+  const emailInputWidget({
+    super.key,
+    required TextEditingController emailController,
+    required bool emailvalidate,
+  }) : _emailController = emailController, _emailvalidate = emailvalidate;
+
+  final TextEditingController _emailController;
+  final bool _emailvalidate;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _emailController,
+      style: TextStyle(
+        color: Color(AppColors.colorWhite),
+        fontSize: 14,
+      ),
+      decoration: InputDecoration(
+        errorText: _emailvalidate
+            ? 'Please enter a valid email address.'
+            : null,
+        hintText: AppStrings.hintTextEmail,
+        hintStyle: TextStyle(
+          color: Color(AppColors.colorGray3),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
+        filled: true,
+        fillColor: Color(AppColors.colorBlue),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+    );
+  }
+}
+
+void _navigateToDashboardScreen(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainHome()));
 }
