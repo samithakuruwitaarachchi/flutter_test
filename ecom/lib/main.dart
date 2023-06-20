@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-
       _counter++;
     });
   }
@@ -66,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                     child: TextField(
@@ -93,22 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
           )
-
-          // Center(
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //
-          //
-          //
-          //     ],
-          //   ),
-          // ),
         )
     );
 
