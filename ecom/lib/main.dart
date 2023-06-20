@@ -1,10 +1,11 @@
 import 'package:ecom/constants/app_strings.dart';
+import 'package:ecom/navControllers/LandingBinding.dart';
 import 'package:ecom/repos/repositories.dart';
 import 'package:ecom/views/LoginScreen.dart';
-import 'package:ecom/views/LoginView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import 'constants/app_colors.dart';
 
@@ -18,17 +19,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RepositoryProvider(
-        create: (context) => repositories(),
-        child:  LoginScreen(),
-      )
+      initialRoute: AppLinks.LOGIN,
+      getPages: AppRoutes.pages,
     );
   }
 }
@@ -105,4 +103,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   }
+}
+
+class AppRoutes{
+  static final pages = [
+    GetPage(name: AppLinks.LOGIN, page: () => RepositoryProvider(
+      create: (context) => repositories(),
+      child:  LoginScreen(),
+    ),
+    binding: LandingBiding())
+  ];
+}
+
+class AppLinks{
+  static const String LOGIN = "/login";
 }

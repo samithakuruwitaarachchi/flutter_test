@@ -1,10 +1,14 @@
+
 import 'package:ecom/Models/ModelProducts.dart';
 import 'package:ecom/Services/ApiService.dart';
 import 'package:ecom/views/ProductDetailView.dart';
+import 'package:ecom/views/ProfileMain.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../components/AppBarLocationText.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({Key? key}) : super(key: key);
@@ -17,7 +21,83 @@ class _MainHomeState extends State<MainHome> {
 
   final apiService = ApiService();
 
+
+  String locationText = "Fetching your location";
+  int _selectedIndex = 0;
+  int pageNum = 1;
+  List<dynamic>? _products = [];
+  late Future<List<Product>> prodList;
+  ScrollController _scrollController = ScrollController();
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData(pageNum);
+   _handleLocationPermission();
+    
+    _scrollController.addListener(() {
+      if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
+        pageNum++;
+        setState(() {});
+      }
+    });
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Location services are disabled. Please enable the services')));
+      return false;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    locationService();
+    return true;
+
+  }
+
   Future<void> locationService() async {
+
+    final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best)
+        .timeout(Duration(seconds: 5));
+
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      setState(() {
+        locationText = placemarks[0].subLocality!;
+      });
+
+
+    }catch(err){}
+
     //
     // Location location = new Location();
     // bool _serviceEnabled;
@@ -45,39 +125,10 @@ class _MainHomeState extends State<MainHome> {
 
   }
 
-  String locationText = "Colombo";
-  int _selectedIndex = 0;
-  int pageNum = 0;
-  List<dynamic>? _products = [];
-  late Future<List<Product>> prodList;
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchData(1);
-    locationService();
-
-  }
 
   Future<List<dynamic>?> fetchData(pageNum) async{
-
      final res =  await apiService.getProdData(pageNum);
-     print("13464 ::: $res");
      return res;
-     //return await apiService.getFeatureProdData(pageNum);
-    // setState(() {
-    //   // _products = res as List;
-    //   //print("leaded data ${_products?.length}");
-    //   prodList = res;
-    //   // print(_products!.length);
-    // });
-
   }
 
   @override
@@ -99,6 +150,8 @@ class _MainHomeState extends State<MainHome> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 2,
                 crossAxisSpacing: 5,
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
                 children: List.generate(snapshot.data!.length,
                         (index) {
                       return  GestureDetector(
@@ -127,47 +180,19 @@ class _MainHomeState extends State<MainHome> {
             }else{
               print('no data');
             }
-            return const CircularProgressIndicator();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
 
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.red,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Services',
-              backgroundColor: Colors.green,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'Messages',
-              backgroundColor: Colors.purple,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Cart',
-              backgroundColor: Colors.pink,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-              backgroundColor: Colors.pink,
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+
       ),
     );
   }
 
   void _navigateToProductDetailsScreen(BuildContext context, String ProdId) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetail(ProductId: ProdId,)));
+     Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetail(ProductId: ProdId,)));
+   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileMain()));
   }
 }

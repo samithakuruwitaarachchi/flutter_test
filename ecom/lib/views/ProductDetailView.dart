@@ -48,7 +48,7 @@ class _ProductDetailState extends State<ProductDetail> {
             builder: (context, snapshot){
               if(snapshot.hasData){
                 return  Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.network(snapshot.data!['data']['product']['images'][0]['url'],),
 
@@ -81,19 +81,12 @@ class _ProductDetailState extends State<ProductDetail> {
               }else{
                 print('no data');
               }
-              return const CircularProgressIndicator();
+              return Center(
+                  child: CircularProgressIndicator(),
+              );
             },
           )
-
-
         ),
-
-
-
-
-
-
-
       ),);
   }
 }

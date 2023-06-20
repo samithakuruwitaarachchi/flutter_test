@@ -38,12 +38,14 @@ dependencies:
   flutter_bloc: ^7.2.0
   shared_preferences: ^2.1.2
   dio: ^5.2.1+1
+  get:
+  geocoding: ^2.1.0
+  geolocator: ^9.0.2
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test: ^1.24.3
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

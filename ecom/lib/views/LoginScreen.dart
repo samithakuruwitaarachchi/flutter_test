@@ -7,7 +7,7 @@ import 'package:ecom/components/ActionButtons.dart';
 import 'package:ecom/components/PasswordInput.dart';
 import 'package:ecom/components/emailInput.dart';
 import 'package:ecom/repos/repositories.dart';
-import 'package:ecom/views/MainHome.dart';
+import 'package:ecom/views/LandingView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,15 +32,19 @@ class LoginScreen extends StatelessWidget {
         ),
         child:  Form(
           key: _formKey,
+          child: Padding(padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BlocBuilder<LoginBloc, LoginStatus>(builder: (context, state){
-                return  EmailInputWidget(emailController: _emailController, emailvalidate: _emailvalidate);}),
+                return  Padding(padding: EdgeInsets.all(15),
+                child: EmailInputWidget(emailController: _emailController, emailvalidate: _emailvalidate));
+                  }),
 
               BlocBuilder<LoginBloc, LoginStatus>(builder: (context, state){
-                return PasswordInputWidget(passController: _passController, obscured: _obscured, textFieldFocusNode: textFieldFocusNode, passvalidate: _passvalidate);}),
+                return Padding(padding: EdgeInsets.all(15),
+                child: PasswordInputWidget(passController: _passController, obscured: _obscured, textFieldFocusNode: textFieldFocusNode, passvalidate: _passvalidate));}),
 
               BlocListener<LoginBloc, LoginStatus>
                 (listener: (context, state) {
@@ -72,6 +76,9 @@ class LoginScreen extends StatelessWidget {
                 }),),
             ],
           ),
+          )
+
+
         )
         ,
       ),
@@ -79,6 +86,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _navigateToDashboardScreen(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainHome()));
+    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainHome()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LandingPage()));
   }
 }

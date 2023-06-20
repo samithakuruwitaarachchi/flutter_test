@@ -15,9 +15,10 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        minimumSize: const Size(120, 52),
         primary: Color(AppColors.actionBtnColor),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15), // <-- Radius
+          borderRadius: BorderRadius.circular(10), // <-- Radius
         ),
       ),
       onPressed: onClick,
