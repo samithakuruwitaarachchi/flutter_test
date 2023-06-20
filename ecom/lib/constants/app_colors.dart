@@ -20,6 +20,9 @@ class AppColors{
   static int colorGray4 = 0xffC5C5C5;
   static int colorGray5 = 0xffE3E3E3;
 
+
+  static int actionBtnColor = 0xffFF9900;
+
 // yellow
   static int colorYellow = 0xffB54708;
 

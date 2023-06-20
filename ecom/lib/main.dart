@@ -1,7 +1,10 @@
 import 'package:ecom/constants/app_strings.dart';
+import 'package:ecom/repos/repositories.dart';
+import 'package:ecom/views/LoginScreen.dart';
 import 'package:ecom/views/LoginView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'constants/app_colors.dart';
 
@@ -22,7 +25,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginView(),
+      home: RepositoryProvider(
+        create: (context) => repositories(),
+        child:  LoginScreen(),
+      )
+
+
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
