@@ -3,4 +3,5 @@ class Apis{
   static String authUrl=  "https://api.escuelajs.co/api/v1/auth/login";
 
   static String getRecomendedProducts = "/recommend/items?page={1}";
+  static String getProductDetail = "/recommend/item/";
 }

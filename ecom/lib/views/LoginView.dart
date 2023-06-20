@@ -150,68 +150,7 @@ class _LoginViewState extends State<LoginView> {
                             }
                           }),),
 
-   
-    
-    
-                          
 
-
-
-                          // Padding(
-                          //   padding: const EdgeInsets.fromLTRB(0, 28, 0, 0),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       Expanded(
-                          //         child:
-                          //
-                          //         ElevatedButton(
-                          //           style: ElevatedButton.styleFrom(
-                          //             primary: Color(AppColors.colorYellow),
-                          //             minimumSize: const Size(100, 52),
-                          //             shape: RoundedRectangleBorder(
-                          //               borderRadius:
-                          //               BorderRadius.circular(8), // <-- Radius
-                          //             ),
-                          //           ),
-                          //           child: Text(
-                          //             AppStrings.loginButtonText,
-                          //             style: const TextStyle(
-                          //               fontSize: 16,
-                          //               fontWeight: FontWeight.w400,
-                          //             ),
-                          //           ),
-                          //           onPressed: () {
-                          //             setState(() {
-                          //               if (_emailController.text.isEmpty) {
-                          //                 _emailvalidate = true;
-                          //               } else {
-                          //                 if (!RegExp(
-                          //                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          //                     .hasMatch(_emailController.text)) {
-                          //                   _emailvalidate = true;
-                          //                 } else {
-                          //                   if (_passController.text.isEmpty ||
-                          //                       _passController.text.length < 8) {
-                          //                     _passvalidate = true;
-                          //                   } else {
-                          //                     _emailvalidate = false;
-                          //                     _passvalidate = false;
-                          //
-                          //                     // _navigateToDashboardScreen(context);
-                          //
-                          //                     _authUser(_emailController.text,
-                          //                         _passController.text);
-                          //                   }
-                          //                 }
-                          //               }
-                          //             });
-                          //           },
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
 
                         ],
                       ),

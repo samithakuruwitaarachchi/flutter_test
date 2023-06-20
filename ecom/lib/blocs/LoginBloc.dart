@@ -19,24 +19,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginStatus>{
       yield state.copyWith(email: event.email);
     }else if (event is LoginPasswordChanged) {
       yield state.copyWith(password: event.password);
-
-      // Form submitted
     } else if (event is LoginSubmitted) {
       yield state.copyWith(formStatus: FormSubmitting());
        try {
          final response = await appRepos?.authUser(event.email, event.password);
 
          if(response != null){
-           print("called response " + response.toString());
            try {
              yield state.copyWith(formStatus: SubmissionSuccess("ISTRUE"));
            }catch(e){
-             print("block error :: " + e.toString());
            }
-           print("called response after " + response.toString());
          }
        } catch (e) {
-          // yield state.copyWith(formStatus: SubmissionFailed(e));
        }
     }
 

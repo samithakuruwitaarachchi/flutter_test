@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:ecom/Models/ModelProducts.dart';
 import 'package:ecom/constants/Apis.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -46,26 +47,55 @@ class ApiService {
     return false;
   }
 
-  Future<String?> getProdData() async {
+  Future<List<dynamic>?> getProdData(pg) async {
     try{
 
       final resposnse = await _dio.get(
-        Apis.baseUrl + "/recommend/items?page={1}",
+        Apis.baseUrl + "/recommend/items?page={$pg}",
       );
       if(resposnse.statusCode == 200){
-        return _getResults(resposnse.data);
+        List<dynamic> list = _getResults(resposnse.data);
+        return list;
       }
 
     }on DioError catch(e){
-      return "Error accured";
+      // return "Error accured";
     }
   }
 
-  String _getResults(Map<String, dynamic> json){
+  Future getSingleProdData(pid) async {
+    try{
+
+      final resposnse = await _dio.get(
+        Apis.baseUrl + Apis.getProductDetail + "{$pid}",
+      );
+
+      if(resposnse.statusCode == 200){
+
+        final list = resposnse.data;
+
+        //print("135454364354343 :: $list");
+        return list;
+      }else{
+        throw Exception('Unexpected error occured!');
+      }
+
+    }catch(e){
+      // return "Error accured";
+    }
+  }
+
+
+  List<dynamic> _getResults(Map<String, dynamic> json){
     log("data prod" + json.toString());
-    final List<dynamic> list = json['data'];
-    return 'Received ${list.length} objects';
+    final List<dynamic> list = json['data']['products'];
+    return list;
+  }
 
-
+  List _getProductResults(Map<String, dynamic> json){
+    log("data product" + json.toString());
+    final list = json['data']['product'];
+    print("khgfhsgf:: $list");
+    return list;
   }
 }
